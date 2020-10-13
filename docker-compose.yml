@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  guestbook-express:
+    image: guestbook-express:1.0.0
+    build: .
+    environment:
+      NODE_ENV: production
+    command: ['npm', 'start', '--', '--port', '5001']
+    ports:
+      - 5001:5001
+
+  redis:
+    image: redis:6-buster
+    command: ['redis-server', '--appendonly', 'yes']
+    ports:
+      - 6379:6379
+    volumes: 
+      - guestbook-express-redis-data:/data
+
+volumes:
+  guestbook-express-redis-data:

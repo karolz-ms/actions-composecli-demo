@@ -11,4 +11,9 @@ The following instructions assume `bash` shell. On Windows, we recommend running
 
 ## Run application locally
 
-(TBD)
+```shell
+npm install
+docker-compose build --no-cache
+docker-compose up
+```
+Open http://localhost:5001 to see current list of books, add new books and delete old ones.

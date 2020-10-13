@@ -1,0 +1,30 @@
+[
+	{
+		"id": "885cf761-e3ca-41a8-8f0b-311b2dbb350a",
+		"title": "I robot",
+		"author": "Isaac Asimov",
+		"image": "https://images4.penguinrandomhouse.com/cover/9780553382563",
+		"description": "A science fiction book about artificial intelligence and robotics"
+	},
+	{
+		"id": "ebec79f7-4d80-42c0-8365-49a777030c9e",
+		"title": "Digital Fortress",
+		"author": "Dan Brown",
+		"image": "https://images-na.ssl-images-amazon.com/images/I/51-3r56wmOL._SX273_BO1,204,203,200_.jpg",
+		"description": "A techno thriller novel"
+	},
+	{
+		"id": "8a27ca63-5fd8-4c51-ba4d-8ec2e27a07a5",
+		"title": "the three musketeers",
+		"author": "Alexandre Dumas",
+		"image": "https://images-na.ssl-images-amazon.com/images/I/51ewNXKhOzL.jpg",
+		"description": "The Three Musketeers is a novel by Alexandre Dumas. Set in the 17th century, it recounts the adventures of a young man named d'Artagnan after he leaves home to travel to Paris, to join the Musketeers of the Guard."
+	},
+	{
+		"id": "39771ca6-c678-484c-a55b-9ee7c643fa45",
+		"title": "Complete Tales of Winnie the Pooh",
+		"author": "A.A.Milne",
+		"image": "https://images-na.ssl-images-amazon.com/images/I/71sJRS4CmHL.jpg",
+		"description": "Since 1926, Winnie-the-Pooh and his friends—Piglet, Owl, Tigger, Kanga, Roo, and the ever doleful Eeyore—have endured as the unforgettable creations of A. A. Milne, who wrote two books of Pooh’s adventures for his son, Christopher Robin, and Ernest H. Shepard, who lovingly gave them shape through his iconic and beautiful illustrations. \r\n\r\nThese characters and their stories are timeless treasures of childhood that continue to speak to all of us with the kind of freshness and heart that distinguishes true storytelling.\r\n\r\nThis deluxe volume brings both Pooh stories—Winnie-the-Pooh and The House at Pooh Corner—together in one beautiful, full-color edition. The texts are complete and unabridged, and all of the illustrations, each gloriously recolored, are included. Elegant yet simple, whimsical yet wise, this classic edition is a book to savor and treasure.\r\n\r\nThe perfect gift for holiday, to welcome a new baby, or for your favorite collector and book lover."
+	}
+]
