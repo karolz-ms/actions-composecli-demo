@@ -27,7 +27,8 @@ jobs:
       - name: Verify cloud.env file was updated
         run: |
           if [[ "$REGISTRY_NAME" -eq 'your-registry-name' ]]; then
-            echo '::set-failed cloud.env file was not updated'
+            echo 'cloud.env file was not updated'
+            exit 1
           fi
 
       - name: Azure Login
