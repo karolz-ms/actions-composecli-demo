@@ -11,9 +11,13 @@ on:
     inputs:
       resource-group:
         required: true
-        description: Resource group to use for deploying the app      
+        description: Resource group to use for deploying the app
+      registry-name:
+        required: true
+        description: The name of the Azure Container Registry that contains application images
       location:
         required: true
+        default: westus2
         description: Location (Azure region) for the resource group
 
 jobs:
@@ -31,3 +35,25 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.CI_AZURE_CREDENTIALS }}
+
+      - name: Install Docker Compose CLI
+        run: >
+          curl -L https://raw.githubusercontent.com/docker/compose-cli/main/scripts/install/install_linux.sh | sh
+
+      - name: Docker Login to Azure
+        run: |
+          CLIENT_ID=$(echo '${{ secrets.CI_AZURE_CREDENTIALS }}' | jq --raw-output .clientId)
+          CLIENT_SECRET=$(echo '${{ secrets.CI_AZURE_CREDENTIALS }}' | jq --raw-output .clientSecret)
+          TENANT_ID=$(az account show --query homeTenantId --output tsv)
+          docker login azure --client-id "$CLIENT_ID" --client-secret "$CLIENT_SECRET" --tenant-id "$TENANT_ID"
+          az acr login --name ${{ github.event.inputs.registry-name }} --username "$CLIENT_ID" --password "$CLIENT_SECRET"
+
+      - name: Create ACI context
+        run: |
+          SUBSCRIPTION_ID=$(az account show --query id --output tsv)
+          docker context create aci acictx --resource-group ${{ github.event.inputs.resource-group }} --location ${{ github.event.inputs.location }} --subscription-id "$SUBSCRIPTION_ID"
+      
+      - name: Deploy the app
+        run: >
+          docker compose --context acictx up -f $GITHUB_WORKSPACE/docker-compose.aci.yml
+
