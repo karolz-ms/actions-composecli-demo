@@ -38,11 +38,11 @@ The following steps need to be done **once** to prepare the environment for depl
 
     This service principal will be used by GitHub actions to authenticate to Azure and manage Azure resources related to the application.
 
+    > You might need to change the name of the GitHub actions service principal to make it unique within your Azure Active Directory tenant.
+
     ```bash
     az ad sp create-for-rbac --name http://sp-guestbookexpress-githubci --role contributor --scopes $(az group show --name rg-guestbookexpress --query '[id]' --output tsv) --sdk-auth
     ```
-
-    > You might need to change the name of the GitHub actions service principal to make it unique within your Azure Active Directory tenant.
 
     Grab the JSON blob resulting from the command above (all of it) and save it in your GitHub repository as a secret named. You can create a repository secred from Settings | Secrets UI on GitHub portal:
 
@@ -51,13 +51,20 @@ The following steps need to be done **once** to prepare the environment for depl
     | `CI_AZURE_CREDENTIALS` | The JSON output of the `az ad sp create-for-rbac...` command above |
 
 1. **Create Azure Container Registry (ACR) for storing main application service container image.**
-   ```shell
-   az acr create --resource-group rg-guestbookexpress --name guestbookexpressacr201013a --sku Basic
-   ```
-
    > Change the name of the container registry as appropriate--it needs to be globally unique
 
-1. **Give the GitHub action service principal ability to pull from the ACR**
    ```shell
+   az acr create --resource-group rg-guestbookexpress --name guestbookexpressacr201013a --sku Basic
    az role assignment create --assignee http://sp-guestbookexpress-githubci --scope $(az acr show --name guestbookexpressacr201013a --query id --output tsv) --role acrpull
    ```
+
+1. **Add storage account and file share for application data data**
+
+    > Change the name of the storage account as appropriate--it needs to be globally unique
+
+   ```shell
+   az storage account create --name gbexpresssa201013a --resource-group rg-guestbookexpress --location westus2
+   az storage share create  --name guestbook-express-redis-data --account-name gbexpresssa201013a
+   ```
+
+   
