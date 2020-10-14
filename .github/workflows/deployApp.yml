@@ -1,0 +1,33 @@
+# Deploys the application to Azure Container Instances
+#
+# Please refer to README file for preparation steps that must be executet manually
+# (mainly Azure resource group creation, Azure service principal creation, 
+# and repository secret setup)
+
+name: DeployApp
+
+on:
+  workflow_dispatch:
+    inputs:
+      resource-group:
+        required: true
+        description: Resource group to use for deploying the app      
+      location:
+        required: true
+        description: Location (Azure region) for the resource group
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CI_AZURE_CREDENTIALS }}
