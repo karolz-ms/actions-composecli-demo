@@ -2,8 +2,7 @@ version: '3.4'
 
 services:
   guestbook-express:
-    # Ensure correct name of the Azure Container Registry below
-    image: guestbookexpressacr201013a.azurecr.io/guestbook-express:1.0.0
+    image: ${REGISTRY_NAME}.azurecr.io/guestbook-express:1.0.0
     build: .
     environment:
       NODE_ENV: production
@@ -22,5 +21,5 @@ volumes:
     driver: azure_file
     driver_opts:
       share_name: guestbook-express-redis-data
-      # Choose a storage account name that is globally unique
-      storage_account_name: gbexpresssa201013a
+      storage_account_name: ${STORAGE_ACCOUNT_NAME}
+

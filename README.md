@@ -27,18 +27,19 @@ The following steps need to be done **once** to prepare the environment for depl
     You will use your repository to save Azure credentials that GitHub actions will use to access Azure on your behalf. That is also why it is important to **make the repository private**.
 
 1. **Create Azure resource group for the app.**
+
+   > Change the name (`rg-guestbookexpress`) and location (`westus2`) of the new Azure resource group as appropriate
+
     ```bash
     az login
-
-    % Make sure the selected Azure subscription is what you want
-    
+    az account show # Verify your selected subscription is what you want
     az group create --name rg-guestbookexpress --location westus2
 
 1. **Create Azure service principal and secret for GitHub actions.** 
 
     This service principal will be used by GitHub actions to authenticate to Azure and manage Azure resources related to the application.
 
-    > You might need to change the name of the GitHub actions service principal to make it unique within your Azure Active Directory tenant.
+    > You might need to change the name of the GitHub actions service principal (`http://sp-guestbookexpress-githubci`; the "http://" prefix is considered part of the name) to make it unique within your Azure Active Directory tenant.
 
     ```bash
     az ad sp create-for-rbac --name http://sp-guestbookexpress-githubci --role contributor --scopes $(az group show --name rg-guestbookexpress --query '[id]' --output tsv) --sdk-auth
@@ -51,7 +52,7 @@ The following steps need to be done **once** to prepare the environment for depl
     | `CI_AZURE_CREDENTIALS` | The JSON output of the `az ad sp create-for-rbac...` command above |
 
 1. **Create Azure Container Registry (ACR) for storing main application service container image.**
-   > Change the name of the container registry as appropriate--it needs to be globally unique
+   > Change the name of the container registry (`guestbookexpressacr201013a`) as appropriate--it needs to be globally unique
 
    ```shell
    az acr create --resource-group rg-guestbookexpress --name guestbookexpressacr201013a --sku Basic
@@ -60,16 +61,16 @@ The following steps need to be done **once** to prepare the environment for depl
 
 1. **Add storage account and file share for application data data**
 
-    > Change the name of the storage account as appropriate--it needs to be globally unique
+    > Change the name of the storage account (`gbexpresssa201013a`) as appropriate--it needs to be globally unique
 
    ```shell
    az storage account create --name gbexpresssa201013a --resource-group rg-guestbookexpress --location westus2
    az storage share create  --name guestbook-express-redis-data --account-name gbexpresssa201013a
    ```
 
-1. **Configure the `PushImage` GitHub action**
+1. **Update the `cloud.env` file**
 
-   (TODO)
+   The `cloud.env` file contains the names of the Azure resource group, region, container registry, and storage account that will be used to deploy the app. Please make sure to edit the file so that it contains correct names of the assets you have created in the previous steps.
 
 ## Build and push application images to Azure Container Registry
 
