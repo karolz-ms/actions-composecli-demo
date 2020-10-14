@@ -67,4 +67,20 @@ The following steps need to be done **once** to prepare the environment for depl
    az storage share create  --name guestbook-express-redis-data --account-name gbexpresssa201013a
    ```
 
-   
+1. **Configure the `PushImage` GitHub action**
+
+   (TODO)
+
+## Build and push application images to Azure Container Registry
+
+(TODO)
+
+## Deploy the application
+
+Unlike the `PushImage` workflow, the `DeplyApp` workflow that deploys the application is designed to be triggered manually.
+
+1. Open your private repository GitHub page in a browser.
+1. Go to Actions tab and select `DeployApp` action
+1. Click "Run workflow" dropdown button. Provide the resource group name, application ACR name, and Azure region for deploying the app and confirm you want to run the workflow.
+
+You can verify that the application has been deployed successfully by examining the `DeployApp` workflow logs.
