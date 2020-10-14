@@ -52,12 +52,12 @@ The following steps need to be done **once** to prepare the environment for depl
 
 1. **Create Azure Container Registry (ACR) for storing main application service container image.**
    ```shell
-   az acr create --resource-group rg-guestbookexpress --name guestbookexpressAcr201013a --sku Basic
+   az acr create --resource-group rg-guestbookexpress --name guestbookexpressacr201013a --sku Basic
    ```
 
    > Change the name of the container registry as appropriate--it needs to be globally unique
 
 1. **Give the GitHub action service principal ability to pull from the ACR**
    ```shell
-   az role assignment create --assignee http://sp-guestbookexpress-githubci --scope $(az acr show --name guestbookexpressAcr201013a --query id --output tsv) --role acrpull
+   az role assignment create --assignee http://sp-guestbookexpress-githubci --scope $(az acr show --name guestbookexpressacr201013a --query id --output tsv) --role acrpull
    ```
