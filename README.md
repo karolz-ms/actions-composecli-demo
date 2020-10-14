@@ -78,7 +78,7 @@ The following steps need to be done **once** to prepare the environment for depl
 
 ## Deploy the application
 
-Unlike the `PushImage` workflow, the `DeplyApp` workflow that deploys the application is designed to be triggered manually.
+Unlike the `BuildImage` workflow, the `DeplyApp` workflow that deploys the application is designed to be triggered manually.
 
 1. Open your private repository GitHub page in a browser.
 1. Go to Actions tab and select `DeployApp` action

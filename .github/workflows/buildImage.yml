@@ -1,0 +1,40 @@
+# Builds and pushes the main service image to Azure Container Registry
+#
+# Please refer to README file for preparation steps that must be executet manually
+# before this action is used
+
+name: BuildImage
+
+on:
+  - push
+  - workflow_dispatch
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set environment variables
+        run: |
+          cat "$GITHUB_WORKSPACE/cloud.env" | awk -F = 'NF == 2 {print $0}' | xargs -L 1 echo >> $GITHUB_ENV
+
+      - name: Verify cloud.env file was updated
+        run: |
+          if [[ "$REGISTRY_NAME" -eq 'your-registry-name' ]]; then
+            echo '::set-failed cloud.env file was not updated'
+          fi
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CI_AZURE_CREDENTIALS }}
+
+      - name: Build image
+        run: |
+          az acr build --image "${REGISTRY_NAME}.azurecr.io/guestbook-express:1.0.0" --registry "$REGISTRY_NAME" "$GITHUB_WORKSPACE"

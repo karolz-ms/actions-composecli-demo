@@ -20,6 +20,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set environment variables
+        run: |
+          cat "$GITHUB_WORKSPACE/cloud.env" | awk -F = 'NF == 2 {print $0}' | xargs -L 1 echo >> $GITHUB_ENV
+
+      - name: Verify cloud.env file was updated
+        run: |
+          if [[ "$REGISTRY_NAME" -eq 'your-registry-name' ]]; then
+            echo '::set-failed cloud.env file was not updated'
+          fi
+
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -35,18 +45,15 @@ jobs:
           CLIENT_SECRET=$(echo '${{ secrets.CI_AZURE_CREDENTIALS }}' | jq --raw-output .clientSecret)
           TENANT_ID=$(az account show --query homeTenantId --output tsv)
           docker login azure --client-id "$CLIENT_ID" --client-secret "$CLIENT_SECRET" --tenant-id "$TENANT_ID"
-          source <(cat "$GITHUB_WORKSPACE/cloud.env" | awk -F = 'NF == 2 {print "export " $0}')
           az acr login --name "$REGISTRY_NAME" --username "$CLIENT_ID" --password "$CLIENT_SECRET"
 
       - name: Create ACI context
         run: |
           SUBSCRIPTION_ID=$(az account show --query id --output tsv)
-          source <(cat "$GITHUB_WORKSPACE/cloud.env" | awk -F = 'NF == 2 {print "export " $0}')
           docker context create aci acictx --resource-group "$RESOURCE_GROUP" --location "$AZURE_REGION" --subscription-id "$SUBSCRIPTION_ID"
       
       - name: Deploy the app
         run: |
-          source <(cat "$GITHUB_WORKSPACE/cloud.env" | awk -F = 'NF == 2 {print "export " $0}')
           docker compose --context acictx up -f "$GITHUB_WORKSPACE/docker-compose.aci.yml"
 
       
