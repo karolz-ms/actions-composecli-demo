@@ -49,3 +49,15 @@ The following steps need to be done **once** to prepare the environment for depl
     | Secret name | Secret value |
     | :--- | :--- |
     | `CI_AZURE_CREDENTIALS` | The JSON output of the `az ad sp create-for-rbac...` command above |
+
+1. **Create Azure Container Registry (ACR) for storing main application service container image.**
+   ```shell
+   az acr create --resource-group rg-guestbookexpress --name guestbookexpressAcr201013a --sku Basic
+   ```
+
+   > Change the name of the container registry as appropriate--it needs to be globally unique
+
+1. **Give the GitHub action service principal ability to pull from the ACR**
+   ```shell
+   az role assignment create --assignee http://sp-guestbookexpress-githubci --scope $(az acr show --name guestbookexpressAcr201013a --query id --output tsv) --role acrpull
+   ```
