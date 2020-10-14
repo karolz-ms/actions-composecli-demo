@@ -27,7 +27,7 @@ jobs:
       - name: Verify cloud.env file was updated
         run: |
           if [[ "$REGISTRY_NAME" -eq 'your-registry-name' ]]; then
-            echo 'cloud.env file was not updated'
+            echo 'Error: cloud.env file was not updated'
             exit 1
           fi
 

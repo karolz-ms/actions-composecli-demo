@@ -10,14 +10,6 @@ This repo shows how to use GitHub actions and the Docker CLI to deploy a sample 
 
 The following instructions assume `bash` shell. On Windows, we recommend running deployment commands from [WSL2 environment](https://docs.microsoft.com/en-us/windows/wsl/wsl2-index).
 
-## Run application locally
-
-```shell
-npm install
-docker-compose build --no-cache
-docker-compose up
-```
-Open http://localhost:5001 to see current list of books, add new books and delete old ones.
 
 ## Set up Azure & GitHub environment
 The following steps need to be done **once** to prepare the environment for deploying the app to ACI.
@@ -70,18 +62,35 @@ The following steps need to be done **once** to prepare the environment for depl
 
 1. **Update the `cloud.env` file**
 
-   The `cloud.env` file contains the names of the Azure resource group, region, container registry, and storage account that will be used to deploy the app. Please make sure to edit the file so that it contains correct names of the assets you have created in the previous steps.
+   The `cloud.env` file contains the names of the Azure resource group, region, container registry, and storage account that will be used to deploy the app. 
+   
+   Please make sure to edit the file so that it contains correct names of the assets you have created in the previous steps. Then commit the change and push it to GitHub.
+
 
 ## Build and push application images to Azure Container Registry
 
-(TODO)
+The `BuildImage` workflow that builds the image for the main service of the sample application is triggered automatically whenever the repo is updated. Go to "Actions" tab of your repo and check the status of the workflow.
+
+The `BuildImage` workflow can also be triggered manually ("Run workflow" button).
+
 
 ## Deploy the application
 
 Unlike the `BuildImage` workflow, the `DeplyApp` workflow that deploys the application is designed to be triggered manually.
 
-1. Open your private repository GitHub page in a browser.
-1. Go to Actions tab and select `DeployApp` action
-1. Click "Run workflow" dropdown button. Provide the resource group name, application ACR name, and Azure region for deploying the app and confirm you want to run the workflow.
+1. Go to Actions tab and select `DeployApp` workflow.
+1. Click "Run workflow" button. 
+1. Verify that the application has been deployed successfully by examining the `DeployApp` workflow logs. You can also check the running container via Azure portal UI or the Docker CLI.
 
-You can verify that the application has been deployed successfully by examining the `DeployApp` workflow logs.
+
+## Run application locally (optional)
+
+If you want, you can also run the application locally. Clone the repo to your machine and run the following commands:
+
+```shell
+npm install
+docker-compose build --no-cache
+docker-compose up
+```
+
+Open http://localhost:5001 to see current list of books, add new books and delete old ones.
