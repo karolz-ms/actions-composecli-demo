@@ -14,9 +14,9 @@ The following instructions assume `bash` shell. On Windows, we recommend running
 ## Set up Azure & GitHub environment
 The following steps need to be done **once** to prepare the environment for deploying the app to ACI.
 
-1. **[Duplicate this repository](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/duplicating-a-repository) into a private repository that you own.** 
+1. **Fork or [duplicate](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/duplicating-a-repository) this repository.** 
 
-    You will use your repository to save Azure credentials that GitHub actions will use to access Azure on your behalf. That is also why it is important to **make the repository private**.
+    You will use your repository to save Azure credentials that GitHub actions will use to access Azure on your behalf. Because this repository is public, a fork will remain public as well (but don't worry, your secrets will not be accessible to anybody but you). On the other hand, duplicate repositories can be made private.
 
 1. **Create Azure resource group for the app.**
 
